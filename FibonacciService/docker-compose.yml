@@ -1,0 +1,7 @@
+version: '3'
+services:
+  web:
+    build: .
+    image: co.us.onecloud.fibonacciservice:v1.0
+    ports:
+      - "8080:8080"
