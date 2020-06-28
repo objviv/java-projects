@@ -15,4 +15,9 @@ $ docker build -t us.co.onecloud.fibonacciservice:1.0 .
 $ docker run -p 8080:8080 us.co.onecloud.fibonacciservice:1.0
 ```
 
+Then use curl as follows:
+
+```
+$ curl http://localhost:8080/fibonacci/5
+```
 
