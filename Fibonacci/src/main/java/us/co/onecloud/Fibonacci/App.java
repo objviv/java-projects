@@ -28,7 +28,7 @@ public class App
 		StringBuilder sb = new StringBuilder(className);
 		
 		sb.append("; fibonacci(").append(n).append(") called");
-		logger.info(sb.toString());
+		logger.fine(sb.toString());
 		
 		assert(n >= 0);
 		
@@ -36,13 +36,13 @@ public class App
 		if (0 == n)
 		{
 			sb = new StringBuilder(className).append("; returning 0");
-			logger.info(sb.toString());
+			logger.fine(sb.toString());
 			ret = 0;
 		}
 		else if (1 == n)
 		{
 			sb = new StringBuilder(className).append("; returning 1");
-			logger.info(sb.toString());
+			logger.fine(sb.toString());
 			ret = 1;
 		}
 		else 
@@ -50,7 +50,7 @@ public class App
 			ret = fibonacci(n - 1) + fibonacci(n - 2);
 			
 			sb = new StringBuilder(className).append("; returning ").append(ret);
-			logger.info(sb.toString());
+			logger.fine(sb.toString());
 		}
 		return ret;
 	}
