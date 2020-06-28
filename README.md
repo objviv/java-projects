@@ -1,6 +1,6 @@
 # java-projects
 
 # Where all Java based projects are stored in github.
-- Project 1
+- Fibonacci generator. API to generate n'th Fibonacci number.
 - Project 2
 - Project 3
