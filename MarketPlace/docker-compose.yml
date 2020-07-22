@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    image: com.intuit.martech.MarketPlaceService:v1.0
+    ports:
+    	- "8080:8080"
+    depends_on:
+     	- redis
+  
+  redis:
+    image: redis:alpine
+    ports:
+    	- "6379"
+    networks:
+    	- frontend
