@@ -1,8 +1,10 @@
 package com.intuit.martech.MarketPlace;
 
-import io.restassured.module.mockmvc.RestAssuredMockMvc.*;
+import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.*;
 import io.restassured.matcher.RestAssuredMatchers.*;
 import org.hamcrest.Matchers.*;
+import org.junit.Test;
 
 /**
  * 
@@ -13,7 +15,14 @@ import org.hamcrest.Matchers.*;
 public class AppTest {
 
 	@Test
-	public void contextLoads() {
+	public void testGetSellersNull() {
+		RestAssuredMockMvc.standaloneSetup(new App());
+		
+		given().
+			when().
+        		get("/sellers").
+        	then().
+        		assertThat().statusCode(200);
 	}
 
 }

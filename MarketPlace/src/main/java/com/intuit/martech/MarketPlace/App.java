@@ -25,7 +25,7 @@ public class App {
     @RequestMapping(value = "/sellers", method=RequestMethod.GET)
     List<Seller> getSellers() {
     	List<Seller> ret = new ArrayList<Seller>();
-    	ret.add(new Seller());
+    	ret.add(new Seller("100","Intuit MarTech"));
         return ret;
     }
 }

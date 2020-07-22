@@ -2,15 +2,14 @@ version: '3.8'
 services:
   web:
     build: .
-    image: com.intuit.martech.MarketPlaceService:v1.0
+    image: com.intuit.martech.marketplaceservice:v1.0
     ports:
-    	- "8080:8080"
+        - "8080:8080"
     depends_on:
-     	- redis
+        - redis
   
   redis:
     image: redis:alpine
+    command: redis-server --bind redis --requirepass password123 --maxmemory 256mb --maxmemory-policy allkeys-lru --appendonly yes
     ports:
-    	- "6379"
-    networks:
-    	- frontend
+        - "6379:6379"
