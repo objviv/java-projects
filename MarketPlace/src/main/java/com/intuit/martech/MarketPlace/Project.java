@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 /**
  * @author vkhanna
  *
@@ -17,6 +20,8 @@ public class Project {
 	private String description;
 	private float maxBudget;
 	private String currency;
+	@JsonSerialize(using = CalendarSerializer.class)
+	@JsonDeserialize(using = CalendarDeserializer.class)
 	private Calendar bidsAccepted;
 	private List<Bid> bids;
 	

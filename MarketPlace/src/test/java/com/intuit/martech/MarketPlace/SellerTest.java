@@ -5,12 +5,14 @@ package com.intuit.martech.MarketPlace;
 
 import static org.junit.Assert.*;
 
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * @author vkhanna
@@ -19,11 +21,14 @@ import com.google.gson.Gson;
 public class SellerTest {
 	
 	private Gson gson;
-	private static final String expected = "{\"id\":100,\"name\":\"Intuit MarTech\",\"projects\":[{\"id\":1,\"description\":\"Build a MarketPlace for self-employed.\",\"maxBudget\":10000.0,\"bidsAccepted\":{\"year\":2020,\"month\":8,\"dayOfMonth\":30,\"hourOfDay\":23,\"minute\":59,\"second\":59}},{\"id\":2,\"description\":\"Remind me of this.\",\"maxBudget\":1000.0,\"bidsAccepted\":{\"year\":2020,\"month\":8,\"dayOfMonth\":30,\"hourOfDay\":23,\"minute\":59,\"second\":59}}]}";
+	private static final String expected = "{\"id\":100,\"name\":\"Intuit MarTech\",\"projects\":[{\"id\":1,\"description\":\"Build a MarketPlace for self-employed.\",\"maxBudget\":10000.0,\"bidsAccepted\":\"2020-09-30T23:59:59.000-0700\"},{\"id\":2,\"description\":\"Remind me of this.\",\"maxBudget\":1000.0,\"bidsAccepted\":\"2020-09-30T23:59:59.000-0700\"}]}";
 	
 	@Before
 	public void setupGson() {
-		gson = new Gson();
+		GsonBuilder build = new GsonBuilder();
+		build.registerTypeHierarchyAdapter(Calendar.class, new CalendarSerializer());
+		build.registerTypeHierarchyAdapter(Calendar.class, new CalendarDeserializer());
+		gson = build.create();
 	}
 
 	/**

@@ -7,6 +7,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import redis.clients.jedis.Jedis;
 
@@ -35,7 +37,10 @@ public class RedisClientTest {
 	
 	@Before
 	public void setupGson() {
-		gson = new Gson();
+		GsonBuilder build = new GsonBuilder();
+		build.registerTypeHierarchyAdapter(Calendar.class, new CalendarSerializer());
+		build.registerTypeHierarchyAdapter(Calendar.class, new CalendarDeserializer());
+		gson = build.create();
 	}
 	
 	@Test
@@ -120,18 +125,63 @@ public class RedisClientTest {
 	}
 	
 	@Test
+	public void performHashsetInsertAndLookup() {
+		Seller seller = new Seller(100, "Intuit MarTech");
+		client.hset("test", new Integer(seller.getId()).toString(), gson.toJson(seller));
+		
+		seller = new Seller(101, "Intuit A4A");
+		client.hset("test", new Integer(seller.getId()).toString(), gson.toJson(seller));
+		
+		String s = client.hget("test", "100");
+		//System.out.println(s);
+		
+		s = client.hget("test", "101");
+		//System.out.println(s);
+		assertEquals(gson.toJson(seller), s);
+		
+		s = client.hget("test", "1011010");
+		System.out.println(s);
+		
+		client.del("test");
+	}
+	
+	@Test
 	public void initializeMarketplace() {
 		List<Seller> sellers = new ArrayList<Seller>();
 		Seller seller = new Seller(100, "Intuit MarTech");
 		Project project = new Project(1, "Build a MarketPlace for self-employed.", 10000.00f, new GregorianCalendar(2020,8,31,23,59,59));
 		seller.addProject(project);
+		client.hset(App.PROJECTS_HASH_KEY, new Integer(project.getId()).toString(), gson.toJson(project));
+		
+		project = new Project(2, "Remind me of this.", 1000.00f, new GregorianCalendar(2020,8,30,23,59,59));
+		seller.addProject(project);
+		client.hset(App.PROJECTS_HASH_KEY, new Integer(project.getId()).toString(), gson.toJson(project));
+		
+		client.set(App.PROJECTS_KEY, gson.toJson(seller.getProjects()));
+		
 		sellers.add(seller);
+		client.hset(App.SELLERS_HASH_KEY, new Integer(seller.getId()).toString(), gson.toJson(seller));
+		
 		seller = new Seller(101, "Intuit A4A");
 		sellers.add(seller);
+		client.hset(App.SELLERS_HASH_KEY, new Integer(seller.getId()).toString(), gson.toJson(seller));
+		
 		seller = new Seller(102, "Intuit Marketing");
 		sellers.add(seller);
+		client.hset(App.SELLERS_HASH_KEY, new Integer(seller.getId()).toString(), gson.toJson(seller));
 		
-		Gson gson = new Gson();
 		client.set(App.SELLERS_KEY, gson.toJson(sellers));
+		
+		List<Buyer> buyers = new ArrayList<Buyer>();
+		Buyer buyer = new Buyer(20, "Vivek Khanna");
+		buyers.add(buyer);
+		client.hset(App.BUYERS_HASH_KEY, new Integer(buyer.getId()).toString(), gson.toJson(buyer));
+		
+		buyer = new Buyer(30, "John Doe");
+		buyers.add(buyer);
+		client.hset(App.BUYERS_HASH_KEY, new Integer(buyer.getId()).toString(), gson.toJson(buyer));
+		
+		client.set(App.BUYERS_KEY, gson.toJson(buyers));
+		
 	}
 }

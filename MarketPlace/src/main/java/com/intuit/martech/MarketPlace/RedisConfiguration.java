@@ -46,6 +46,10 @@ public class RedisConfiguration {
 	    return poolConfig;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public static JedisPool getJedisPool() {
 		if (null == jedisPool) {
 			new RedisConfiguration();
@@ -62,17 +66,21 @@ public class RedisConfiguration {
 	}
 	*/
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public static Jedis getClient() { 
 		Jedis client = new Jedis(RedisHost, RedisPort, RedisConnectionTimeout);
-		//client.getClient().setTimeoutInfinite();
-		//client.auth("password123");
 		return client; 
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public static Jedis getClientForTest() { 
 		Jedis client = new Jedis(RedisHostTest, RedisPort, RedisConnectionTimeout);
-		//client.getClient().setTimeoutInfinite();
-		//client.auth("password123");
 		return client; 
 	}
 	
