@@ -26,6 +26,7 @@ public class App {
     List<Seller> getSellers() {
     	List<Seller> ret = new ArrayList<Seller>();
     	ret.add(new Seller("100","Intuit MarTech"));
+    	ret.add(new Seller());
         return ret;
     }
 }
