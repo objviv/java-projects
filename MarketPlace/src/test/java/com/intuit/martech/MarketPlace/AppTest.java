@@ -24,5 +24,4 @@ public class AppTest {
         	then().
         		assertThat().statusCode(200);
 	}
-
 }

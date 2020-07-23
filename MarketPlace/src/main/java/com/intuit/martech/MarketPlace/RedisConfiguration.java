@@ -16,29 +16,37 @@ import redis.clients.jedis.JedisPoolConfig;
 
 public class RedisConfiguration {
 	
+	private static final String   RedisHost = "127.0.0.1";
+	private static final int      RedisPort=6379;
+	private static final int      RedisConnectionTimeout=2000;
+	private static final int      RedisMaximumWaitTime=1000;
+	private static final int      RedisMaximumIdleConnectionCount=20;
+	private static final int      RedisMaximumActiveConnectionCount=300;
+	
 	private static JedisPool jedisPool;
 
 	private RedisConfiguration() { 
 		final JedisPoolConfig poolConfig = buildPoolConfig();
-		jedisPool = new JedisPool(poolConfig, "localhost");
+		jedisPool = new JedisPool(poolConfig, RedisHost, RedisPort, RedisConnectionTimeout);
 	}
 	
 	private JedisPoolConfig buildPoolConfig() {
 	    final JedisPoolConfig poolConfig = new JedisPoolConfig();
-	    poolConfig.setMaxTotal(128);
-	    poolConfig.setMaxIdle(128);
-	    poolConfig.setMinIdle(16);
-	    poolConfig.setTestOnBorrow(true);
-	    poolConfig.setTestOnReturn(true);
-	    poolConfig.setTestWhileIdle(true);
-	    poolConfig.setMinEvictableIdleTimeMillis(Duration.ofSeconds(60).toMillis());
-	    poolConfig.setTimeBetweenEvictionRunsMillis(Duration.ofSeconds(30).toMillis());
-	    poolConfig.setNumTestsPerEvictionRun(3);
-	    poolConfig.setBlockWhenExhausted(true);
+	    poolConfig.setMaxTotal(RedisMaximumActiveConnectionCount);
+	    poolConfig.setMaxIdle(RedisMaximumIdleConnectionCount);
+	    poolConfig.setMaxWaitMillis(RedisMaximumWaitTime);
+	    //poolConfig.setMinIdle(16);
+	    //poolConfig.setTestOnBorrow(true);
+	    //poolConfig.setTestOnReturn(true);
+	    //poolConfig.setTestWhileIdle(true);
+	    //poolConfig.setMinEvictableIdleTimeMillis(Duration.ofSeconds(60).toMillis());
+	    //poolConfig.setTimeBetweenEvictionRunsMillis(Duration.ofSeconds(30).toMillis());
+	    //poolConfig.setNumTestsPerEvictionRun(3);
+	    //poolConfig.setBlockWhenExhausted(true);
 	    return poolConfig;
 	}
 	
-	private static JedisPool getJedisPool() {
+	public static JedisPool getJedisPool() {
 		if (null == jedisPool) {
 			new RedisConfiguration();
 		}
@@ -47,6 +55,7 @@ public class RedisConfiguration {
 	
 	public static Jedis getClient() { 
 		Jedis client = getJedisPool().getResource();
+		client.getClient().setTimeoutInfinite();
 		client.auth("password123");
 		return client; 
 	}
