@@ -3,8 +3,6 @@
  */
 package com.intuit.martech.MarketPlace;
 
-import java.time.Duration;
-
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -16,7 +14,9 @@ import redis.clients.jedis.JedisPoolConfig;
 
 public class RedisConfiguration {
 	
-	private static final String   RedisHost = "127.0.0.1";
+	//private static final String   RedisHost = "127.0.0.1";
+	private static final String   RedisHostTest = "localhost";
+	private static final String   RedisHost = "host.docker.internal";
 	private static final int      RedisPort=6379;
 	private static final int      RedisConnectionTimeout=2000;
 	private static final int      RedisMaximumWaitTime=1000;
@@ -53,10 +53,26 @@ public class RedisConfiguration {
 		return jedisPool;
 	}
 	
+	/**
 	public static Jedis getClient() { 
 		Jedis client = getJedisPool().getResource();
 		client.getClient().setTimeoutInfinite();
-		client.auth("password123");
+		//client.auth("password123");
+		return client; 
+	}
+	*/
+	
+	public static Jedis getClient() { 
+		Jedis client = new Jedis(RedisHost, RedisPort, RedisConnectionTimeout);
+		//client.getClient().setTimeoutInfinite();
+		//client.auth("password123");
+		return client; 
+	}
+	
+	public static Jedis getClientForTest() { 
+		Jedis client = new Jedis(RedisHostTest, RedisPort, RedisConnectionTimeout);
+		//client.getClient().setTimeoutInfinite();
+		//client.auth("password123");
 		return client; 
 	}
 	

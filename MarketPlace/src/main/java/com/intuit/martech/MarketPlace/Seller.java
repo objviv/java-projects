@@ -1,5 +1,6 @@
 package com.intuit.martech.MarketPlace;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  */
 public class Seller {
 
-	private String id;
+	private int id;
 	private String name;
 	private List<Project> projects;
 	
@@ -16,7 +17,7 @@ public class Seller {
 	 * 
 	 */
 	public Seller() {
-		this.id = "";
+		this.id = 0;
 		this.name = "";
 	}
 	
@@ -25,7 +26,7 @@ public class Seller {
 	 * @param id
 	 * @param name
 	 */
-	public Seller(String id, String name) {
+	public Seller(int id, String name) {
 		this.id = id;
 		this.name = name;
 	}
@@ -33,13 +34,13 @@ public class Seller {
 	/**
 	 * @return the id
 	 */
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	/**
@@ -74,9 +75,10 @@ public class Seller {
 	 * @param project
 	 */
 	public void addProject(Project project) {
-		if (this.projects != null) {
-			this.projects.add(project);
+		if (this.projects == null) {
+			this.projects = new ArrayList<Project>();
 		}
+		this.projects.add(project);
 	}
 
 }

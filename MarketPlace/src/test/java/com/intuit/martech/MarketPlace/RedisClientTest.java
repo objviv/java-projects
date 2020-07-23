@@ -7,6 +7,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.junit.Before;
@@ -28,7 +29,8 @@ public class RedisClientTest {
 	
 	@BeforeClass
 	public static void setupClient() {
-		client = RedisConfiguration.getClient();
+		//client = RedisConfiguration.getClient();
+		client = new Jedis("localhost", 6379, 2000);
 	}
 	
 	@Before
@@ -53,11 +55,11 @@ public class RedisClientTest {
 	
 	@Test
 	public void performListInsertAndPop() {
-		Seller seller1 = new Seller("100", "Intuit MarTech");
+		Seller seller1 = new Seller(100, "Intuit MarTech");
 		//System.out.println(gson.toJson(seller1));
 		client.lpush("test", gson.toJson(seller1));
 		
-		Seller seller2 = new Seller("101", "Intuit A4A");
+		Seller seller2 = new Seller(101, "Intuit A4A");
 		//System.out.println(gson.toJson(seller2));
 		client.lpush("test", gson.toJson(seller2));
 		
@@ -76,9 +78,9 @@ public class RedisClientTest {
 	@Test
 	public void performListInsertAndLookup() {
 		List<Seller> sellers = new ArrayList<Seller>();
-		Seller seller = new Seller("100", "Intuit MarTech");
+		Seller seller = new Seller(100, "Intuit MarTech");
 		sellers.add(seller);
-		seller = new Seller("101", "Intuit A4A");
+		seller = new Seller(101, "Intuit A4A");
 		sellers.add(seller);
 		
 		client.set("test", gson.toJson(sellers));
@@ -94,7 +96,7 @@ public class RedisClientTest {
 	@Test
 	public void performListInsertAndLookup2() {
 		List<Seller> sellers = new ArrayList<Seller>();
-		Seller seller = new Seller("100", "Intuit MarTech");
+		Seller seller = new Seller(100, "Intuit MarTech");
 		sellers.add(seller);
 		
 		//System.out.println(gson.toJson(sellers));
@@ -104,7 +106,7 @@ public class RedisClientTest {
 		//System.out.println(s);
 		sellers = (List<Seller>)gson.fromJson(s, sellers.getClass());
 		
-		seller = new Seller("101", "Intuit A4A");
+		seller = new Seller(101, "Intuit A4A");
 		sellers.add(seller);
 		
 		//System.out.println(gson.toJson(sellers));
@@ -120,9 +122,13 @@ public class RedisClientTest {
 	@Test
 	public void initializeMarketplace() {
 		List<Seller> sellers = new ArrayList<Seller>();
-		Seller seller = new Seller("100", "Intuit MarTech");
+		Seller seller = new Seller(100, "Intuit MarTech");
+		Project project = new Project(1, "Build a MarketPlace for self-employed.", 10000.00f, new GregorianCalendar(2020,8,31,23,59,59));
+		seller.addProject(project);
 		sellers.add(seller);
-		seller = new Seller("101", "Intuit A4A");
+		seller = new Seller(101, "Intuit A4A");
+		sellers.add(seller);
+		seller = new Seller(102, "Intuit Marketing");
 		sellers.add(seller);
 		
 		Gson gson = new Gson();

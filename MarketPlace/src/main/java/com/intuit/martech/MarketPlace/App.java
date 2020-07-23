@@ -23,6 +23,13 @@ import redis.clients.jedis.Jedis;
 public class App {
 	
 	public static final String SELLERS_KEY = "sellers";
+	private static Jedis client;
+	
+	private boolean isTest = false;
+	public App() {}
+	public App(boolean isTest) {
+		this.isTest = isTest;
+	}
 	
 	/**
 	 * 
@@ -39,7 +46,10 @@ public class App {
      */
     @RequestMapping(value = "/sellers", method=RequestMethod.GET)
     List<Seller> getSellers() {
-    	Jedis client = RedisConfiguration.getClient();
+    	if (client == null) {
+    		client = (isTest?RedisConfiguration.getClientForTest():RedisConfiguration.getClient());
+    		client.connect();
+    	}
     	String s = client.get(SELLERS_KEY);
     	
     	List<Seller> ret = new ArrayList<Seller>();

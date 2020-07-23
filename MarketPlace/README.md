@@ -11,8 +11,8 @@ $ mvn clean spring-boot:run
 You can build it into a Docker container and run it as follows
 
 ```
-$ docker build -t com.intuit.martech.MarketPlace:1.0 .
-$ docker run -p 8080:8080 com.intuit.martech.MarketPlace:1.0
+$ docker build -t com.intuit.martech.marketplaceservice:v1.0 .
+$ docker run -p 8080:8080 com.intuit.martech.marketplaceservice:v1.0
 ```
 
 Then use curl as follows:
